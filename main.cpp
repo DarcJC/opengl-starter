@@ -36,6 +36,7 @@ int main() {
 
     // 进入渲染循环, 直到窗口被关闭
     while(!glfwWindowShouldClose(window)) {
+        // 检查并调用事件 交换缓冲区
         glfwSwapBuffers(window);
         glfwPollEvents();
     }
