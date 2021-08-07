@@ -9,7 +9,7 @@ void Draw::drawCall() const {
     glBindVertexArray(vao);
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ibo);
     glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, nullptr);
-    glBindVertexArray(0);
+    glBindVertexArray(0); // 重置VAO 以免被其他渲染操作污染
 }
 
 void Draw::initBuffer() {
