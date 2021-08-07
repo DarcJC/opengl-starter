@@ -2,6 +2,8 @@
 #include <GLFW/glfw3.h>
 #include <iostream>
 
+#include "draw.h"
+
 void framebuffer_size_callback(GLFWwindow* window, int width, int height);
 
 int main() {
@@ -34,8 +36,10 @@ int main() {
     // 初始化视口（Viewport）
     glfwSetFramebufferSizeCallback(window, framebuffer_size_callback);
 
+    Draw draw;
     // 进入渲染循环, 直到窗口被关闭
     while(!glfwWindowShouldClose(window)) {
+        draw.drawCall();
         // 检查并调用事件 交换缓冲区
         glfwSwapBuffers(window);
         glfwPollEvents();
