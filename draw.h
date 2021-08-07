@@ -13,15 +13,20 @@ public:
     Draw();
     void initBuffer();
     void initPipe();
-    void drawCall();
+    void drawCall() const;
 
 private:
-    const float vertices[9]{
-        -0.5f, -0.5f, 0.0f,
-        0.5f, -0.5f, 0.0f,
-        0.0f,  0.5f, 0.0f
+    const float vertices[12]{
+        0.5f, 0.5f, 0.0f,   // 右上角
+        0.5f, -0.5f, 0.0f,  // 右下角
+        -0.5f, -0.5f, 0.0f, // 左下角
+        -0.5f, 0.5f, 0.0f   // 左上角
     };
-    unsigned int vbo, vao;
+    const unsigned int indices[6]{
+        0, 1, 3, // 上半个三角形
+        1, 2, 3, // 下半个三角形
+    };
+    unsigned int vbo, vao, ibo;
     unsigned int vertexShader, fragmentShader;
     unsigned int shaderProgram;
     const char *vertexShaderSource = "#version 460 core\n"

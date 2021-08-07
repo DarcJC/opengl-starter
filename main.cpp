@@ -37,6 +37,7 @@ int main() {
     glfwSetFramebufferSizeCallback(window, framebuffer_size_callback);
 
     Draw draw;
+//    glPolygonMode(GL_FRONT_AND_BACK, GL_LINE); // 线框模式 用于调试
     // 进入渲染循环, 直到窗口被关闭
     while(!glfwWindowShouldClose(window)) {
         draw.drawCall();

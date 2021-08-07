@@ -4,19 +4,27 @@
 
 #include "draw.h"
 
-void Draw::drawCall() {
-    glDrawArrays(GL_TRIANGLES, 0, 3);
+void Draw::drawCall() const {
+    glUseProgram(shaderProgram);
+    glBindVertexArray(vao);
+    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ibo);
+    glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, nullptr);
+    glBindVertexArray(0);
 }
 
 void Draw::initBuffer() {
     // 创建一个大小为1的顶点数组对象 并绑定到OpenGL
     glGenVertexArrays(1, &vao);
     glBindVertexArray(vao);
+    // 创建一个大小为1的索引缓冲对象 并绑定到OpenGL
+    glGenBuffers(1, &ibo);
+    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ibo);
     // 创建一个大小为1的顶点缓冲对象 并绑定到OpenGL
     glGenBuffers(1, &vbo);
     glBindBuffer(GL_ARRAY_BUFFER, vbo);
-    // 复制顶点到缓冲区中
+    // 复制顶点和索引到缓冲区中
     glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
+    glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW);
     // 设置缓冲区
     glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)nullptr);
     glEnableVertexAttribArray(0);
