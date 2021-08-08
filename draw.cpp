@@ -7,7 +7,7 @@
 
 void Draw::drawCall() const {
     // 设置使用的着色器
-    glUseProgram(shaderProgram);
+    shaderProgram.use();
     auto now = (float)glfwGetTime();
     // 清除颜色缓冲区以设置背景颜色
     auto redValue = std::sin(now + 1) / 2.0f + 0.5f;
@@ -40,27 +40,7 @@ void Draw::initBuffer() {
     glEnableVertexAttribArray(1);
 }
 
-void Draw::initPipe() {
-    // 编译顶点着色器
-    vertexShader = glCreateShader(GL_VERTEX_SHADER);
-    glShaderSource(vertexShader, 1, &vertexShaderSource, nullptr);
-    glCompileShader(vertexShader);
-    // 编译片段着色器
-    fragmentShader = glCreateShader(GL_FRAGMENT_SHADER);
-    glShaderSource(fragmentShader, 1, &fragmentShaderSource, nullptr);
-    glCompileShader(fragmentShader);
-    // 着色器链接
-    shaderProgram = glCreateProgram();
-    glAttachShader(shaderProgram, vertexShader);
-    glAttachShader(shaderProgram, fragmentShader);
-    glLinkProgram(shaderProgram);
-    glUseProgram(shaderProgram);
-    // 清理编译的着色器对象
-    glDeleteShader(vertexShader);
-    glDeleteShader(fragmentShader);
-}
-
-Draw::Draw() {
+Draw::Draw()
+: shaderProgram("shaders/simple.vert.glsl", "shaders/simple.frag.glsl") {
     initBuffer();
-    initPipe();
 }
