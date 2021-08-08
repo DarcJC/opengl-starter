@@ -8,11 +8,7 @@
 void Draw::drawCall() const {
     // 设置使用的着色器
     glUseProgram(shaderProgram);
-    // 设置颜色
     auto now = (float)glfwGetTime();
-    auto greenValue = std::sin(now) / 2.0f + 0.5f;
-    int fragmentColorLocation = glGetUniformLocation(shaderProgram, "customColor");
-    glUniform4f(fragmentColorLocation, .0f, greenValue, .0f, 1.0f);
     // 清除颜色缓冲区以设置背景颜色
     auto redValue = std::sin(now + 1) / 2.0f + 0.5f;
     glClearColor(redValue, .0f, .0f, 1.0f);
