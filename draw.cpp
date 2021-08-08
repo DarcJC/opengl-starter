@@ -10,9 +10,12 @@ void Draw::drawCall() const {
     shaderProgram.use();
     auto now = (float)glfwGetTime();
     // 清除颜色缓冲区以设置背景颜色
-    auto redValue = std::sin(now + 1) / 2.0f + 0.5f;
+    auto redValue = std::sin(now) / 2.0f + 0.5f;
     glClearColor(redValue, .0f, .0f, 1.0f);
     glClear(GL_COLOR_BUFFER_BIT);
+    // 设置位置偏移
+    auto offsetLocation = glGetUniformLocation(shaderProgram.id, "offset");
+    glUniform3f(offsetLocation, .0f, redValue, .0f);
     // 绑定OpenGL对象并渲染
     glBindVertexArray(vao);
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ibo);
