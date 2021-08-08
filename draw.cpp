@@ -13,6 +13,10 @@ void Draw::drawCall() const {
     auto greenValue = std::sin(now) / 2.0f + 0.5f;
     int fragmentColorLocation = glGetUniformLocation(shaderProgram, "customColor");
     glUniform4f(fragmentColorLocation, .0f, greenValue, .0f, 1.0f);
+    // 清除颜色缓冲区以设置背景颜色
+    auto redValue = std::sin(now + 1) / 2.0f + 0.5f;
+    glClearColor(redValue, .0f, .0f, 1.0f);
+    glClear(GL_COLOR_BUFFER_BIT);
     // 绑定OpenGL对象并渲染
     glBindVertexArray(vao);
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ibo);
