@@ -35,9 +35,10 @@ private:
                                      "   gl_Position = vec4(aPos.x, aPos.y, aPos.z, 1.0);\n"
                                      "}";
     const char *fragmentShaderSource = "#version 460 core\n"
-                                       "out vec4 FragColor;\n"
+                                       "out vec4 fragColor;\n"
+                                       "uniform vec4 customColor;"
                                        "void main() {\n"
-                                       "    FragColor = vec4(1.0f, 0.5f, 0.2f, 1.0f);\n"
+                                       "    fragColor = customColor;\n"
                                        "}\n";
 };
 

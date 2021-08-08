@@ -3,9 +3,17 @@
 //
 
 #include "draw.h"
+#include <cmath>
 
 void Draw::drawCall() const {
+    // 设置使用的着色器
     glUseProgram(shaderProgram);
+    // 设置颜色
+    auto now = (float)glfwGetTime();
+    auto greenValue = std::sin(now) / 2.0f + 0.5f;
+    int fragmentColorLocation = glGetUniformLocation(shaderProgram, "customColor");
+    glUniform4f(fragmentColorLocation, .0f, greenValue, .0f, 1.0f);
+    // 绑定OpenGL对象并渲染
     glBindVertexArray(vao);
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ibo);
     glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, nullptr);
