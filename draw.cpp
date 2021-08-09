@@ -4,6 +4,9 @@
 
 #include "draw.h"
 #include <cmath>
+#include <glm/glm.hpp>
+#include <glm/gtc/matrix_transform.hpp>
+#include <glm/gtc/type_ptr.hpp>
 
 void Draw::drawCall() const {
     // 设置使用的着色器
@@ -13,9 +16,11 @@ void Draw::drawCall() const {
     auto redValue = std::sin(now) / 2.0f + 0.5f;
     glClearColor(redValue, .0f, .0f, 1.0f);
     glClear(GL_COLOR_BUFFER_BIT);
-    // 设置位置偏移
-    auto offsetLocation = glGetUniformLocation(shaderProgram.id, "offset");
-    glUniform3f(offsetLocation, .0f, redValue, .0f);
+    // 设置位移uniform
+    glm::mat4 transform(1.0f);
+    transform = glm::rotate(transform, glm::radians(std::sin(now) * 180), glm::vec3(0.0, 0.0, 1.0));
+    transform = glm::scale(transform, glm::vec3(redValue, redValue, redValue));
+    glUniformMatrix4fv(glGetUniformLocation(shaderProgram.id, "transform"), 1, GL_FALSE, glm::value_ptr(transform));
     // 绑定OpenGL对象并渲染
     texture.bindUnit(GL_TEXTURE0);
     texture1.bindUnit(GL_TEXTURE1);
