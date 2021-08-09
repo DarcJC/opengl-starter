@@ -37,6 +37,7 @@ public:
 
     explicit Texture2D(const GLchar* path);
     void bind() const;
+    void bindUnit(GLenum texture) const;
 };
 
 #endif //OPENGL_STARTER_SHADER_H

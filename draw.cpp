@@ -17,7 +17,10 @@ void Draw::drawCall() const {
     auto offsetLocation = glGetUniformLocation(shaderProgram.id, "offset");
     glUniform3f(offsetLocation, .0f, redValue, .0f);
     // 绑定OpenGL对象并渲染
-    texture.bind();
+    texture.bindUnit(GL_TEXTURE0);
+    texture1.bindUnit(GL_TEXTURE1);
+    shaderProgram.setInt("customTexture", 0);
+    shaderProgram.setInt("texture1", 1);
     glBindVertexArray(vao);
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ibo);
     glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, nullptr);
@@ -50,6 +53,7 @@ void Draw::initBuffer() {
 
 Draw::Draw()
 : shaderProgram("shaders/simple.vert.glsl", "shaders/simple.frag.glsl"),
-  texture("textures/container.jpg") {
+  texture("textures/container.jpg"),
+  texture1("textures/awesomeface.png"){
     initBuffer();
 }

@@ -30,6 +30,7 @@ private:
     unsigned int vbo, vao, ibo;
     ShaderProgram shaderProgram;
     Texture2D texture;
+    Texture2D texture1;
 };
 
 

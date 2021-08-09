@@ -107,7 +107,9 @@ Texture2D::Texture2D(const GLchar *path) {
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
         // 设置纹理数据
-        glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, originWidth, originHeight, 0, GL_RGB, GL_UNSIGNED_BYTE, data);
+        // 判断通道数，如果大于三就使用RGBA读取
+        if (nrChannels > 3) glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, originWidth, originHeight, 0, GL_RGBA, GL_UNSIGNED_BYTE, data);
+        else glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, originWidth, originHeight, 0, GL_RGB, GL_UNSIGNED_BYTE, data);
         glGenerateMipmap(GL_TEXTURE_2D);
     }
     // 释放加载的图片数据 并取消绑定
@@ -116,5 +118,11 @@ Texture2D::Texture2D(const GLchar *path) {
 }
 
 void Texture2D::bind() const {
+    glBindTexture(GL_TEXTURE_2D, id);
+}
+
+void Texture2D::bindUnit(const GLenum texture) const {
+    if (texture < GL_TEXTURE0 || texture > GL_TEXTURE31) throw "Invalid Unit";
+    glActiveTexture(texture);
     glBindTexture(GL_TEXTURE_2D, id);
 }

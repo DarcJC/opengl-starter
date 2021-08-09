@@ -3,6 +3,7 @@
 #include <iostream>
 
 #include "draw.h"
+#include "stb_image.h"
 
 void framebuffer_size_callback(GLFWwindow* window, int width, int height);
 
@@ -35,6 +36,8 @@ int main() {
 
     // 初始化视口（Viewport）
     glfwSetFramebufferSizeCallback(window, framebuffer_size_callback);
+    // 设置stb_image库
+    stbi_set_flip_vertically_on_load(true);
 
     Draw draw;
 //    glPolygonMode(GL_FRONT_AND_BACK, GL_LINE); // 线框模式 用于调试
