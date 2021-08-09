@@ -16,16 +16,20 @@ public:
     void drawCall() const;
 
 private:
-    const float vertices[18]{
-        0.5f, -0.5f, 0.0f,  1.0f, 0.0f, 0.0f,   // 右下
-        -0.5f, -0.5f, 0.0f,  0.0f, 1.0f, 0.0f,   // 左下
-        0.0f,  0.5f, 0.0f,  0.0f, 0.0f, 1.0f    // 顶部
+    const float vertices[32]{
+        //     ---- 位置 ----       ---- 颜色 ----     - 纹理坐标 -
+        0.5f,  0.5f, 0.0f,   1.0f, 0.0f, 0.0f,   1.0f, 1.0f,   // 右上
+        0.5f, -0.5f, 0.0f,   0.0f, 1.0f, 0.0f,   1.0f, 0.0f,   // 右下
+        -0.5f, -0.5f, 0.0f,   0.0f, 0.0f, 1.0f,   0.0f, 0.0f,   // 左下
+        -0.5f,  0.5f, 0.0f,   1.0f, 1.0f, 0.0f,   0.0f, 1.0f    // 左上
     };
     const unsigned int indices[6]{
-        0, 1, 2,
+        0, 1, 3,
+        1, 2, 3,
     };
     unsigned int vbo, vao, ibo;
     ShaderProgram shaderProgram;
+    Texture2D texture;
 };
 
 

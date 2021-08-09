@@ -3,6 +3,7 @@
 //
 
 #include "shader.h"
+#include "stb_image.h"
 
 ShaderProgram::ShaderProgram(const GLchar *vertexPath, const GLchar *fragmentPath) {
     using namespace std;
@@ -89,4 +90,31 @@ void printLinkError(unsigned int id) {
         glGetProgramInfoLog(id, 512, nullptr, err);
         std::cout << "ERROR::SHADER::PROGRAM::LINKING_FAILED\n" << err << std::endl;
     }
+}
+
+Texture2D::Texture2D(const GLchar *path) {
+    // 加载图片
+    unsigned char* data = stbi_load(path, &originWidth, &originHeight, &nrChannels, 0);
+    if (!data) {
+        std::cout << "Failed to load texture from " << path << std::endl;
+    } else {
+        // 构造OpenGL纹理对象
+        glGenTextures(1, &id);
+        glBindTexture(GL_TEXTURE_2D, id);
+        // 设置纹理属性
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+        // 设置纹理数据
+        glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, originWidth, originHeight, 0, GL_RGB, GL_UNSIGNED_BYTE, data);
+        glGenerateMipmap(GL_TEXTURE_2D);
+    }
+    // 释放加载的图片数据 并取消绑定
+    stbi_image_free(data);
+    glBindTexture(GL_TEXTURE_2D, 0);
+}
+
+void Texture2D::bind() const {
+    glBindTexture(GL_TEXTURE_2D, id);
 }

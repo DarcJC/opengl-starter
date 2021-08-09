@@ -30,4 +30,13 @@ public:
 };
 
 
+class Texture2D {
+public:
+    unsigned int id;
+    int originWidth, originHeight, nrChannels; // 加载的图像属性
+
+    explicit Texture2D(const GLchar* path);
+    void bind() const;
+};
+
 #endif //OPENGL_STARTER_SHADER_H

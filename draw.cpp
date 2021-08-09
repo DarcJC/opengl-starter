@@ -17,6 +17,7 @@ void Draw::drawCall() const {
     auto offsetLocation = glGetUniformLocation(shaderProgram.id, "offset");
     glUniform3f(offsetLocation, .0f, redValue, .0f);
     // 绑定OpenGL对象并渲染
+    texture.bind();
     glBindVertexArray(vao);
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ibo);
     glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, nullptr);
@@ -37,13 +38,18 @@ void Draw::initBuffer() {
     glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
     glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW);
     // 设置顶点属性指针
-    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (void*)nullptr); // 位置属性
+    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)nullptr); // 位置属性
     glEnableVertexAttribArray(0);
-    glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (void*)(3 * sizeof(float))); // 颜色属性
+    glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)(3 * sizeof(float))); // 颜色属性
     glEnableVertexAttribArray(1);
+    glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)(6 * sizeof(float))); // 纹理坐标
+    glEnableVertexAttribArray(2);
+    // 取消绑定VAO
+    glBindVertexArray(0);
 }
 
 Draw::Draw()
-: shaderProgram("shaders/simple.vert.glsl", "shaders/simple.frag.glsl") {
+: shaderProgram("shaders/simple.vert.glsl", "shaders/simple.frag.glsl"),
+  texture("textures/container.jpg") {
     initBuffer();
 }
