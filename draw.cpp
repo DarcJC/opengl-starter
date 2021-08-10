@@ -4,9 +4,6 @@
 
 #include "draw.h"
 #include <cmath>
-#include <glm/glm.hpp>
-#include <glm/gtc/matrix_transform.hpp>
-#include <glm/gtc/type_ptr.hpp>
 
 void Draw::drawCall() const {
     // 设置使用的着色器
@@ -26,16 +23,24 @@ void Draw::drawCall() const {
     view = glm::translate(view, glm::vec3(.0f, .0f, -3.0f));
     glm::mat4 projection(1.0f);
     projection = glm::perspective(glm::radians(45.0f), (float)width / (float)height, .1f, 100.0f);
-    glUniformMatrix4fv(glGetUniformLocation(shaderProgram.id, "model"), 1, GL_FALSE, glm::value_ptr(model));
-    glUniformMatrix4fv(glGetUniformLocation(shaderProgram.id, "view"), 1, GL_FALSE, glm::value_ptr(view));
-    glUniformMatrix4fv(glGetUniformLocation(shaderProgram.id, "projection"), 1, GL_FALSE, glm::value_ptr(projection));
+    shaderProgram.setMat4("model", model);
+    shaderProgram.setMat4("view", view);
+    shaderProgram.setMat4("projection", projection);
     // 绑定OpenGL对象并渲染
     texture.bindUnit(GL_TEXTURE0);
     texture1.bindUnit(GL_TEXTURE1);
     shaderProgram.setInt("customTexture", 0);
     shaderProgram.setInt("texture1", 1);
     glBindVertexArray(vao);
-    glDrawArrays(GL_TRIANGLES, 0, 40);
+    // 绘制多个对象
+    for (int i = 0; i < sizeof(cubePositions) / sizeof(glm::vec3); ++i) {
+        model = glm::mat4(1.0f);
+        model = glm::translate(model, cubePositions[i]);
+        float angle = 20.0f + (float)i;
+        model = glm::rotate(model, now * glm::radians(angle), glm::vec3(1.0f, .3f, .5f));
+        shaderProgram.setMat4("model", model);
+        glDrawArrays(GL_TRIANGLES, 0, 36);
+    }
     glBindVertexArray(0); // 重置VAO 以免被其他渲染操作污染
 }
 
