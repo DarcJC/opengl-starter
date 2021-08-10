@@ -11,7 +11,9 @@
 
 class Draw {
 public:
-    Draw();
+    int height, width;
+
+    Draw(int width, int height);
     void initBuffer();
     void drawCall() const;
 

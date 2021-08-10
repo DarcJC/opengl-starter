@@ -7,6 +7,8 @@
 
 void framebuffer_size_callback(GLFWwindow* window, int width, int height);
 
+Draw* drawInstance = nullptr;
+
 int main() {
 
     // 关闭与stdio同步
@@ -39,7 +41,8 @@ int main() {
     // 设置stb_image库
     stbi_set_flip_vertically_on_load(true);
 
-    Draw draw;
+    Draw draw(800, 600);
+    drawInstance = &draw;
 //    glPolygonMode(GL_FRONT_AND_BACK, GL_LINE); // 线框模式 用于调试
     // 进入渲染循环, 直到窗口被关闭
     while(!glfwWindowShouldClose(window)) {
@@ -56,4 +59,8 @@ int main() {
 
 void framebuffer_size_callback(GLFWwindow* window, int width, int height) {
     glViewport(0, 0, width, height);
+    if (drawInstance) {
+        drawInstance->width = width;
+        drawInstance->height = height;
+    }
 }

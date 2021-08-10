@@ -16,11 +16,16 @@ void Draw::drawCall() const {
     auto redValue = std::sin(now) / 2.0f + 0.5f;
     glClearColor(redValue, .0f, .0f, 1.0f);
     glClear(GL_COLOR_BUFFER_BIT);
-    // 设置位移uniform
-    glm::mat4 transform(1.0f);
-    transform = glm::rotate(transform, glm::radians(std::sin(now) * 180), glm::vec3(0.0, 0.0, 1.0));
-    transform = glm::scale(transform, glm::vec3(redValue, redValue, redValue));
-    glUniformMatrix4fv(glGetUniformLocation(shaderProgram.id, "transform"), 1, GL_FALSE, glm::value_ptr(transform));
+    // 设置各个空间的转换矩阵
+    glm::mat4 model(1.0f); // 世界空间绕着为局部空间绕x轴旋转-55度
+    model = glm::rotate(model, glm::radians(-55.0f), glm::vec3(1.0f, .0f, .0f));
+    glm::mat4 view(1.0f); // 观察空间为原点“后退”3步
+    view = glm::translate(view, glm::vec3(.0f, .0f, -3.0f));
+    glm::mat4 projection(1.0f);
+    projection = glm::perspective(glm::radians(45.0f), (float)width / (float)height, .1f, 100.0f);
+    glUniformMatrix4fv(glGetUniformLocation(shaderProgram.id, "model"), 1, GL_FALSE, glm::value_ptr(model));
+    glUniformMatrix4fv(glGetUniformLocation(shaderProgram.id, "view"), 1, GL_FALSE, glm::value_ptr(view));
+    glUniformMatrix4fv(glGetUniformLocation(shaderProgram.id, "projection"), 1, GL_FALSE, glm::value_ptr(projection));
     // 绑定OpenGL对象并渲染
     texture.bindUnit(GL_TEXTURE0);
     texture1.bindUnit(GL_TEXTURE1);
@@ -56,9 +61,10 @@ void Draw::initBuffer() {
     glBindVertexArray(0);
 }
 
-Draw::Draw()
+Draw::Draw(int width, int height)
 : shaderProgram("shaders/simple.vert.glsl", "shaders/simple.frag.glsl"),
   texture("textures/container.jpg"),
-  texture1("textures/awesomeface.png"){
+  texture1("textures/awesomeface.png"),
+  width(width), height(height){
     initBuffer();
 }
