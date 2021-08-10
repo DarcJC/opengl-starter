@@ -12,6 +12,9 @@ void Draw::drawCall() const {
     // 设置使用的着色器
     shaderProgram.use();
     auto now = (float)glfwGetTime();
+    // 打开深度缓冲
+    glEnable(GL_DEPTH_TEST);
+    glClear(GL_DEPTH_BUFFER_BIT);
     // 清除颜色缓冲区以设置背景颜色
     auto redValue = std::sin(now) / 2.0f + 0.5f;
     glClearColor(redValue, .0f, .0f, 1.0f);
